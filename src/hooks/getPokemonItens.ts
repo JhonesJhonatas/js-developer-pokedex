@@ -37,6 +37,7 @@ type GetDetailsAndPutInListProps = {
 const useGetPokemonItens = () => {
   const [pokemonItensIsLoading, setPokemonItensIsLoading] = useState(false)
   const [pokemonList, setPokemonList] = useState<PokemonListSchema[]>([])
+  const [limit, setLimit] = useState(10)
 
   const getDetailsAndPutInList = useCallback(
     async (results: GetDetailsAndPutInListProps) => {
@@ -74,12 +75,16 @@ const useGetPokemonItens = () => {
   const handleUpdateItens = useCallback(async () => {
     try {
       setPokemonItensIsLoading(true)
-      const response = await api.get(`pokemon?offset=0&limit=10`)
+      const response = await api.get(`pokemon?offset=0&limit=${limit}`)
       await getDetailsAndPutInList(response.data.results)
     } finally {
       setPokemonItensIsLoading(false)
     }
-  }, [getDetailsAndPutInList])
+  }, [getDetailsAndPutInList, limit])
+
+  const handleLoadMoreItens = useCallback(() => {
+    setLimit((currentLimit) => currentLimit + 10)
+  }, [])
 
   useEffect(() => {
     handleUpdateItens()
@@ -88,6 +93,7 @@ const useGetPokemonItens = () => {
   return {
     pokemonItensIsLoading,
     pokemonList,
+    handleLoadMoreItens,
   }
 }
 

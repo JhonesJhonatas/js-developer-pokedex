@@ -2,7 +2,7 @@ import { PokemonBox } from '../components/PokemonBox'
 import { useGetPokemonItens } from '../hooks/getPokemonItens'
 
 export function Home() {
-  const { pokemonList } = useGetPokemonItens()
+  const { pokemonList, handleLoadMoreItens } = useGetPokemonItens()
 
   return (
     <main className="w-screen h-screen bg-zinc-200 flex flex-col items-center justify-center">
@@ -13,7 +13,7 @@ export function Home() {
             {pokemonList.map((pokemon) => {
               return (
                 <PokemonBox
-                  key={pokemon.number}
+                  key={pokemon.imageUrl}
                   number={pokemon.number}
                   name={pokemon.name}
                   type={pokemon.type}
@@ -24,7 +24,10 @@ export function Home() {
             })}
           </div>
         </div>
-        <button className="bg-blue-500 text-zinc-50 font-bold rounded-full py-2 px-4 w-fit text-sm hover:bg-blue-600 transition-all">
+        <button
+          onClick={handleLoadMoreItens}
+          className="bg-blue-500 text-zinc-50 font-bold rounded-full py-2 px-4 w-fit text-sm hover:bg-blue-600 transition-all"
+        >
           Carregar Mais
         </button>
       </div>
